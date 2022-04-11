@@ -1,6 +1,7 @@
 from math import inf
 from sklearn.datasets import make_regression
 from sklearn.linear_model import ElasticNet
+from sklearn.linear_model import LogisticRegression
 import numpy as np
 import itertools
 
@@ -47,7 +48,7 @@ def trainModels(X, y, a_l1):
         if a_l1[i] is not None:
             alpha = a_l1[i][0]
             l1_ratio = a_l1[i][1]
-            model = ElasticNet(alpha = alpha, l1_ratio=l1_ratio)
+            model = ElasticNet(alpha = alpha, l1_ratio=l1_ratio, tol = .1)
             model.fit(X, y)
             models.append(model)
         else: models.append(None)
@@ -127,6 +128,7 @@ sc_validation_data = np.loadtxt("validate.csv",skiprows=1,delimiter=",")
 sc_testing_data = np.loadtxt("test.csv",skiprows=1,delimiter=",")
 
 exercise(sc_training_data,sc_validation_data,sc_testing_data, 81)
+
 #Exercise 3
 
 #Get data from CSVs
@@ -135,3 +137,17 @@ stab_validation_data = np.loadtxt("UCIValidation.csv",skiprows=1,delimiter=",")
 stab_testing_data = np.loadtxt("UCITesting.csv",skiprows=1,delimiter=",")
 
 exercise(stab_training_data,stab_validation_data,stab_testing_data, 11)
+
+#Exercise 4
+
+#a)
+regularModel = LogisticRegression()
+nonRegularModel = LogisticRegression(penalty='none')
+X, y = getXY(stab_training_data, 11)
+regularModel.fit(X, y)
+nonRegularModel.fit(X, y)
+
+#b)
+X, y = getXY(stab_validation_data, 11)
+h_reg = regularModel.predict(X)
+h_non = nonRegularModel.predict(X)
