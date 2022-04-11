@@ -179,11 +179,20 @@ h_non = nonRegularModel.predict(X)
 reg_risk = emprisk(y, h_reg)
 non_risk = emprisk(y, h_non)
 
-print(reg_risk)
-print(non_risk)
+print("L2 regularization model empirical risk:", reg_risk)
+print("No regularization model empirical risk:", non_risk)
 
 reg_cm = confusionMatrix(y, h_reg)
 non_cm = confusionMatrix(y, h_non)
 
-print(reg_cm)
-print(non_cm)
+def printConfusionMatrix(cm):
+    print("True Negative:",cm[0][0])
+    print("False Positive:",cm[0][1])
+    print("False Negative:",cm[1][0])
+    print("True Positive:", cm[1][1])
+
+print("L2 Regularization Model Confusion Matrix")
+printConfusionMatrix(reg_cm)
+print("No Regularization Model Confusion Matrix")
+printConfusionMatrix(non_cm)
+
