@@ -1,4 +1,5 @@
 from math import inf
+import math
 from sklearn.datasets import make_regression
 from sklearn.linear_model import ElasticNet
 from sklearn.linear_model import LogisticRegression
@@ -127,7 +128,7 @@ sc_training_data = np.loadtxt("train.csv",skiprows=1,delimiter=",")
 sc_validation_data = np.loadtxt("validate.csv",skiprows=1,delimiter=",")
 sc_testing_data = np.loadtxt("test.csv",skiprows=1,delimiter=",")
 
-exercise(sc_training_data,sc_validation_data,sc_testing_data, 81)
+#exercise(sc_training_data,sc_validation_data,sc_testing_data, 81)
 
 #Exercise 3
 
@@ -136,9 +137,18 @@ stab_training_data = np.loadtxt("UCITraining.csv",skiprows=1,delimiter=",")
 stab_validation_data = np.loadtxt("UCIValidation.csv",skiprows=1,delimiter=",")
 stab_testing_data = np.loadtxt("UCITesting.csv",skiprows=1,delimiter=",")
 
-exercise(stab_training_data,stab_validation_data,stab_testing_data, 11)
+#exercise(stab_training_data,stab_validation_data,stab_testing_data, 11)
 
 #Exercise 4
+def loss(y, h):
+    if y == h: return 1
+    else: return 0
+
+def emprisk(y, h):
+    sum = 0
+    for i in range(len(y)):
+        sum += loss(y[i], h[i])
+    return sum / len(y)
 
 #a)
 regularModel = LogisticRegression()
@@ -151,3 +161,9 @@ nonRegularModel.fit(X, y)
 X, y = getXY(stab_validation_data, 11)
 h_reg = regularModel.predict(X)
 h_non = nonRegularModel.predict(X)
+
+reg_risk = emprisk(y, h_reg)
+non_risk = emprisk(y, h_non)
+
+print(reg_risk)
+print(non_risk)
