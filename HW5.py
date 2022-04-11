@@ -150,6 +150,20 @@ def emprisk(y, h):
         sum += loss(y[i], h[i])
     return sum / len(y)
 
+def confusionMatrix(y, h):
+    true_neg = 0
+    true_pos = 0
+    false_neg = 0
+    false_pos = 0
+    for i in range(len(y)):
+        if y[i] == h[i]:
+            if h[i] == 0: true_neg += 1
+            else: true_pos += 1
+        else:
+            if h[i] == 0: false_neg += 1
+            else: false_pos += 1
+    return [[true_neg, false_pos], [false_neg, true_pos]]
+
 #a)
 regularModel = LogisticRegression()
 nonRegularModel = LogisticRegression(penalty='none')
@@ -167,3 +181,9 @@ non_risk = emprisk(y, h_non)
 
 print(reg_risk)
 print(non_risk)
+
+reg_cm = confusionMatrix(y, h_reg)
+non_cm = confusionMatrix(y, h_non)
+
+print(reg_cm)
+print(non_cm)
