@@ -53,12 +53,12 @@ def trainModels(X, y, a_l1):
         else: models.append(None)
     return models
 
-def printMSE(params, h, MSE):
-    for i in range(len(params)):
-        if h[i] is not None: print("Lambda1:",params[i][0],"Lambda2:",params[i][1],"Prediction:",h[i][i],"MSE",MSE[i])
+def printMSE(params, MSE):
+    for i in range(len(MSE)):
+        if MSE[i] is not None: print("Lambda1:",params[i][0],"Lambda2:",params[i][1],"MSE",MSE[i])
 
-def printBestMSE(params, h, MSE, bestIndex):
-    print("Best - Lambda1:",params[bestIndex][0],"Lambda2:",params[bestIndex][1],"Prediction:",h[bestIndex][bestIndex],"MSE:",MSE[bestIndex])
+def printBestMSE(params, MSE, bestIndex):
+    print("Best - Lambda1:",params[bestIndex][0],"Lambda2:",params[bestIndex][1],"MSE:",MSE[bestIndex])
 
 #Get data from CSVs
 training_data = np.loadtxt("train.csv",skiprows=1,delimiter=",")
@@ -84,7 +84,7 @@ training_Models = trainModels(X, y, a_l1)
 # error (MSE) on the training examples.
 print("---Training Data---")
 training_bestIndex, training_MSE, training_h = bestMSE(X, y, training_Models)
-printMSE(params, training_h, training_MSE)
+printMSE(params, training_MSE)
 
 #c) Make a prediction for each validation example
 # and calculate the mean squared error on the validation examples
@@ -94,12 +94,12 @@ y = validation_data[:,81]
 
 validation_Models = trainModels(X, y, a_l1)
 validation_bestIndex, validation_MSE, validation_h = bestMSE(X, y, validation_Models)
-printMSE(params, validation_h, validation_MSE)  
+printMSE(params, validation_MSE)  
 
 #d) Which model (i.e., pair of λ1 and λ2) performed best on the training data?
-printBestMSE(params, training_h, training_MSE, training_bestIndex)
+printBestMSE(params, training_MSE, training_bestIndex)
 #Which model performed best on the validation data?
-printBestMSE(params, validation_h, validation_MSE, validation_bestIndex)
+printBestMSE(params, validation_MSE, validation_bestIndex)
 
 #e)Find the best hyperparameter set (pair of λ1 and λ2) on the validation data. Train a model with
 #the same λ1 and λ2 on both the training and validation data. 
@@ -110,5 +110,7 @@ y = np.append(training_data[:,81], validation_data[:,81], axis=0)
 
 best_a_l1 = [a_l1[validation_bestIndex]]
 combined_model = trainModels(X, y, best_a_l1)
-combined_bestIndex, combined_MSE, combined_h = bestMSE(X, y, combined_model)
-print("MSE:", combined_MSE[0])
+X = testing_data[:,0:80]
+y = testing_data[:,81]
+testing_bestIndex, testing_MSE, testing_h = bestMSE(X, y, combined_model)
+print("Testing Data MSE", testing_MSE[0])
