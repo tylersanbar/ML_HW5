@@ -1,10 +1,14 @@
 from math import inf
 import math
-from sklearn.datasets import make_regression
 from sklearn.linear_model import ElasticNet
 from sklearn.linear_model import LogisticRegression
 import numpy as np
 import itertools
+
+def warn(*args, **kwargs):
+    pass
+import warnings
+warnings.warn = warn
 
 def mse(y, h):
     sum = 0
@@ -130,18 +134,18 @@ def printConfusionMatrix(cm):
 #Exercise 2
 
 #Get data from CSVs
-sc_training_data = np.loadtxt("train.csv",skiprows=1,delimiter=",")
-sc_validation_data = np.loadtxt("validate.csv",skiprows=1,delimiter=",")
-sc_testing_data = np.loadtxt("test.csv",skiprows=1,delimiter=",")
+sc_training_data = np.loadtxt("SCTraining.csv",skiprows=1,delimiter=",")
+sc_validation_data = np.loadtxt("SCValidation.csv",skiprows=1,delimiter=",")
+sc_testing_data = np.loadtxt("SCTesting.csv",skiprows=1,delimiter=",")
 
 exercise(sc_training_data,sc_validation_data,sc_testing_data, 81)
 
 #Exercise 3
 
 #Get data from CSVs
-stab_training_data = np.loadtxt("UCITraining.csv",skiprows=1,delimiter=",")
-stab_validation_data = np.loadtxt("UCIValidation.csv",skiprows=1,delimiter=",")
-stab_testing_data = np.loadtxt("UCITesting.csv",skiprows=1,delimiter=",")
+stab_training_data = np.loadtxt("StabTraining.csv",skiprows=1,delimiter=",")
+stab_validation_data = np.loadtxt("StabValidation.csv",skiprows=1,delimiter=",")
+stab_testing_data = np.loadtxt("StabTesting.csv",skiprows=1,delimiter=",")
 
 exercise(stab_training_data,stab_validation_data,stab_testing_data, 11)
 
