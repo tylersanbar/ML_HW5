@@ -121,6 +121,12 @@ def exercise(training_data, validation_data, testing_data, num_features):
     print("---Testing Data---")
     print("MSE:", testing_MSE[0])
 
+def printConfusionMatrix(cm):
+    print("True Negative:",cm[0][0])
+    print("False Positive:",cm[0][1])
+    print("False Negative:",cm[1][0])
+    print("True Positive:", cm[1][1])
+
 #Exercise 2
 
 #Get data from CSVs
@@ -164,6 +170,7 @@ def confusionMatrix(y, h):
             else: false_pos += 1
     return [[true_neg, false_pos], [false_neg, true_pos]]
 
+print("---Validation Data Logistic Regression---")
 #a)
 regularModel = LogisticRegression()
 nonRegularModel = LogisticRegression(penalty='none')
@@ -172,7 +179,9 @@ regularModel.fit(X, y)
 nonRegularModel.fit(X, y)
 
 #b)
+
 X, y = getXY(stab_validation_data, 11)
+#Using the two models created in part (a) make a prediction for each validation example. W
 h_reg = regularModel.predict(X)
 h_non = nonRegularModel.predict(X)
 
@@ -185,14 +194,28 @@ print("No regularization model empirical risk:", non_risk)
 reg_cm = confusionMatrix(y, h_reg)
 non_cm = confusionMatrix(y, h_non)
 
-def printConfusionMatrix(cm):
-    print("True Negative:",cm[0][0])
-    print("False Positive:",cm[0][1])
-    print("False Negative:",cm[1][0])
-    print("True Positive:", cm[1][1])
-
+print("---Confusion Matrix---")
 print("L2 Regularization Model Confusion Matrix")
 printConfusionMatrix(reg_cm)
 print("No Regularization Model Confusion Matrix")
 printConfusionMatrix(non_cm)
 
+print("---Best performance---")
+if reg_risk < non_risk: print("L2 Regularized model is better with risk of :", reg_risk," < ", non_risk)
+else: print("Non Regularized model is better with risk of :", non_risk," < ", reg_risk)
+
+print("---Training Data Logistic Regression using L2 Regularized Model---")
+#c part 2)
+stab_combined_data = np.append(stab_training_data, stab_validation_data, axis = 0)
+X, y = getXY(stab_combined_data, 11)
+combined_reg_model = LogisticRegression()
+regularModel.fit(X, y)
+
+X, y = getXY(stab_training_data, 11)
+h_test_reg = regularModel.predict(X)
+test_risk = emprisk(y, h_test_reg)
+test_cm = confusionMatrix(y, h_test_reg)
+
+print("L2 regularization model empirical risk:", test_risk)
+print("L2 Regularization Model Confusion Matrix")
+printConfusionMatrix(test_cm)
